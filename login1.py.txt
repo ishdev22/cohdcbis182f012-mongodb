@@ -1,0 +1,50 @@
+from flask import Flask, render_template, url_for, request, session, redirect
+from flask.ext.pymongo import pyMongo 
+import bcrypt
+
+app =  Flask(_name_)
+
+app.config['MONGO_DBNAME'] = 'mongolog'
+app.config['MONGO_URI'] = 'mongodb://pretty:printed@ds021731.mlab.com:21731/mongologinexaple'
+
+mongo = PyMongo(app)
+
+@app.route('/')
+def index():
+    if 'username'  in session:
+        return 'You are logged in as'  + session ['username']
+
+    return render_template('index.html')
+
+@app.route('/login')
+def login():
+    users = mongo.db.users.find_one({'name' : request.from ['username']})
+    
+    if login user:
+       if bcrypt.hashpw(request.from['pass'].encode('utf-8'), login_user ['password']) == login_user['password'].encode(utf-8)): 
+          session ['username'] = request.form['username']
+          return redirect(url_for('index')
+       return 'Invalid username or password combination'
+
+ @app.route('/register', methods=['POST', 'GET'])
+def register():
+    if request.method == 'POST':
+       user = mongo.db.users
+       existing_user = user.find_one({'name' : request.from['username']})
+
+       if existing_user is None:
+          hashpass = bcrypt.hashpw()request.form['pass'].encode('utf-8'), bcrypt.genSalt())
+          users.insert({'name' : request.form['username'], password : hashpass})
+          session ['username'] = request.from['username']
+          return redirect(url_for('index'))
+
+       return 'That username already exists!!!!'
+
+
+    rturn ''
+ 
+
+
+if _name_ == '_main_':
+    app.Secret_key = 'mysecret'
+    app.run(debug=True)
